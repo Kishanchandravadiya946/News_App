@@ -3,7 +3,9 @@
 @{
     ViewData["Title"] = "Index";
 }
-
+@{
+    var userId = HttpContextAccessor.HttpContext.Session.GetInt32("UserId") ?? 0;
+}
 <h1>Search </h1>
 <hr />
 <div class="container">
@@ -77,6 +79,50 @@
 @section Scripts {
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> <!-- For icons -->
     <script>
+
+     // ON LOAD LIKE BUTTO
+        async function checkIfLiked(articleId, userId) {
+            const response = await fetch(`/Likes/IsLikedByUser?userId=${userId}&articleId=${articleId}`);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const isLiked = await response.json(); // Assuming the controller returns a boolean
+            return isLiked;
+        }
+
+        function updateLikeButton(articleId, userId) {
+            checkIfLiked(articleId, userId).then(isLiked => {
+                const button = document.getElementById(`likeButton-${articleId}`);
+                if (isLiked) {
+                    button.classList.add("btn-success");
+                    button.classList.remove("btn-primary");
+                    button.innerHTML = '<i class="fas fa-thumbs-up"></i> Liked';
+                } else {
+                    button.classList.add("btn-primary");
+                    button.classList.remove("btn-success");
+                    button.innerHTML = '<i class="fas fa-thumbs-up"></i> Like';
+                }
+            }).catch(error => {
+                console.error('Error checking like status:', error);
+            });
+        }
+
+        function initializeLikeButtons(userId) {
+            const buttons = document.querySelectorAll('[id^="likeButton-"]');
+            buttons.forEach(button => {
+                const articleId = button.id.split('-')[1]; // Extract articleId from button ID
+                updateLikeButton(articleId, userId); // Check and update the button
+            });
+        }
+
+        // Call the function when the page loads
+        window.onload = function () {
+            const userId = @userId; // Get userId from the server-side code
+            if (userId != 0) {
+                initializeLikeButtons(userId);
+            } // Initialize all like buttons on page load
+        }
+
         function likeArticle(articleId) {
             console.log("Like button clicked for article: " + articleId); // Log the button click
 

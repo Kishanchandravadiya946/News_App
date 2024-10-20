@@ -18,13 +18,12 @@
     <div class="col-md-12 mb-4">
         <div class="card">
             <!-- Display Image if it exists -->
-            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+            @if (!string.IsNullOrEmpty(Model.ImageUrl) && Model.ImageUrl != "No Images")
             {
                 <img src="@Model.ImageUrl" class="card-img-top" alt="Article Image" />
             }
             else
             {
-                <img src="/images/default-image.jpg" class="card-img-top" alt="Default Image" /> <!-- Use a default image if none is provided -->
             }
 
             <div class="card-body">
@@ -35,9 +34,12 @@
                 </p>
 
                 <!-- Display Video link if it exists -->
-                @if (!string.IsNullOrEmpty(Model.VideoUrl))
+                @if (!string.IsNullOrEmpty(Model.VideoUrl) && Model.VideoUrl != "No Videos")
                 {
-                    <p><a href="@Url.Content("~/" + Model.VideoUrl)" target="_blank" class="btn btn-sm btn-secondary">Watch Video</a></p>
+                    <video width="800" height="450" controls>
+                        <source src="@Model.VideoUrl" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
                 }
                 else
                 {

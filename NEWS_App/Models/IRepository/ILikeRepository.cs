@@ -11,5 +11,7 @@
         Task UpdateLikeAsync(Like like);
         Task<IEnumerable<Like>> GetLikesByUserIdAsync(int userId);
         Task<IEnumerable<Like>> GetLikesByArticleIdAsync(int articleId);
+
+        Task<bool> IsArticleLikedByUser(int userId, int articleId);
     }
 }

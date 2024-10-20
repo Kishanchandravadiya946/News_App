@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "pIcOpNtS/QmTDsGUvC4wA7WDk59+kyO/848AzUL9qnI=",
+  "Hash": "/84M7OXx40ehxs19bGeb3Y2QK2s9SxXOTlSzLEKlwEA=",
   "Source": "NEWS_App",
   "BasePath": "_content/NEWS_App",
   "Mode": "Default",
@@ -3891,6 +3891,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\videos\\accPage.png"
+    },
+    {
+      "Identity": "C:\\Users\\91951\\OneDrive\\Desktop\\WAD\\NEWS_App\\NEWS_App\\wwwroot\\videos\\INDIAL.mov",
+      "SourceId": "NEWS_App",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\91951\\OneDrive\\Desktop\\WAD\\NEWS_App\\NEWS_App\\wwwroot\\",
+      "BasePath": "_content/NEWS_App",
+      "RelativePath": "videos/INDIAL.mov",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\videos\\INDIAL.mov"
     }
   ]
 }

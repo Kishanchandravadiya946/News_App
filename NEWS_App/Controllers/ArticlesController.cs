@@ -98,6 +98,7 @@ namespace NEWS_App.Controllers
             }
             if (videoFile != null && videoFile.Length > 0)
             {
+
                 var videoPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/videos", videoFile.FileName);
                 using (var stream = new FileStream(videoPath, FileMode.Create))
                 {

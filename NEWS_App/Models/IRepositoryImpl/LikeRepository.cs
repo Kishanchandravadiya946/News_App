@@ -25,6 +25,11 @@ namespace NEWS_App.Models.IRepositoryImpl
         {
             return await _context.Set<Like>().FirstOrDefaultAsync(l => l.ArticleId == article && l.UserId == user );
         }
+        public async Task<bool> IsArticleLikedByUser(int userId, int articleId)
+        {
+            return await _context.Set<Like>().AnyAsync(l => l.ArticleId == articleId && l.UserId == userId);
+        }
+
 
         public async  Task AddLikeAsync(Like like)
         {

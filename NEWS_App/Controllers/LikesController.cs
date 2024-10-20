@@ -4,6 +4,7 @@ using NEWS_App.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.CodeAnalysis.Scripting;
 using static System.Collections.Specialized.BitVector32;
+using System.ComponentModel;
 
 namespace NEWS_App.Controllers
 {
@@ -51,13 +52,16 @@ namespace NEWS_App.Controllers
             }
         }
 
+        public async Task<bool> IsLikedByUser(int userId, int articleId)
+        { 
+            return await _likeRepository.IsArticleLikedByUser(userId, articleId);
+        }
 
 
 
 
 
-
-        public async Task<IActionResult> Index()
+            public async Task<IActionResult> Index()
         {
             var likes = await _likeRepository.GetAllLikesAsync();
             return View(likes);

@@ -257,3 +257,4 @@ C:\Users\91951\OneDrive\Desktop\WAD\NEWS_App\NEWS_App\bin\Debug\net8.0\runtimes\
 C:\Users\91951\OneDrive\Desktop\WAD\NEWS_App\NEWS_App\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\91951\OneDrive\Desktop\WAD\NEWS_App\NEWS_App\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Windows.Extensions.dll
 C:\Users\91951\OneDrive\Desktop\WAD\NEWS_App\NEWS_App\bin\Debug\net8.0\libman.json
+C:\Users\91951\OneDrive\Desktop\WAD\NEWS_App\NEWS_App\obj\Debug\net8.0\NEWS_App.sourcelink.json
