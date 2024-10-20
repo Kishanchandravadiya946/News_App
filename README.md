@@ -25,11 +25,11 @@ The purpose of this project is to create a simple and functional news applicatio
 
 ## Technologies Used
 
-- *ASP.NET Core MVC*: Framework for building web applications.
-- *Entity Framework Core*: ORM for managing database interactions.
-- *SQL Server*: Relational database for storing articles.
-- *Bootstrap*: CSS framework for responsive UI.
-- *HTML/CSS/JavaScript*: Frontend for building the user interface.
+- **ASP.NET Core MVC**: Framework for building web applications.
+- **Entity Framework Core**: ORM for managing database interactions.
+- **SQL Server**: Relational database for storing articles.
+- **Bootstrap**: CSS framework for responsive UI.
+- **HTML/CSS/JavaScript**: Frontend for building the user interface.
 
 ## Getting Started
 
