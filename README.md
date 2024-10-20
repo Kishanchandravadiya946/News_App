@@ -43,10 +43,9 @@ To get a local copy of the project up and running, follow these steps.
 
 ### Clone the repository
 
-bash
+```
 git clone https://github.com/Kishanchandravadiya946/News_App.git
-cd News_App
-
+```
 
 ## Running the Project
 
@@ -62,19 +61,21 @@ cd News_App
 
 - Make sure that the connection string in the appsettings.json file points to your local or cloud-based SQL Server. You may need to update the Server and Database values to match your environment:
 
-json
+```json
 "ConnectionStrings": {
-  "NEWSDb": "server=(localdb)\MSSQLLocalDB;database=NEWS;Trusted_Connection=true"
-}
+  "ConnectionName": "server=SERVERNAME;database=DATABASENAME;Integrated Security=true;"
+},
+```
 
 
 ### 4. Do migration and Update the Database
 
 - Open *Package Manager Console* in Visual Studio and run the following commands to apply any pending migrations and create the database:
 
-bash
-add-migration anyname
-Update-Database
+```
+add-migration "message"
+update-database
+```
 
 
 ### 5. Run the Application
