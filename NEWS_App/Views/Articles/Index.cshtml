@@ -5,6 +5,8 @@
 }
 @{
     var userId = HttpContextAccessor.HttpContext.Session.GetInt32("UserId") ?? 0;
+    var username = HttpContextAccessor.HttpContext.Session.GetString("Username");
+
 }
 
 <h1>TOP NEWS</h1>
@@ -52,6 +54,14 @@
                                         </button>
                                         <span id="likeCount-@item.Id" class="ml-2">Likes: @item.LikeCount</span>
                                     </div>
+                                @if (username == "admin@gmail.com")
+                                {
+                                    <div>
+                                        <button id="deleteButton-@item.Id" class="btn btn-sm btn-danger" onclick="deleteArticle(@item.Id)">
+                                            <i class="fas fa-trash"></i> Delete
+                                        </button>
+                                    </div>
+                                }
                                     <div>
                                     <small class="text-muted">Published on: @item.PublishedDate.ToString("MM/dd/yyyy hh:mm tt")</small>
                                     </div>
@@ -158,6 +168,25 @@
                 error: function (xhr, status, error) {
                     console.error("AJAX Error:", xhr, status, error); // Log the error details
                     alert("An error occurred while liking the article: " + error);
+                }
+            });
+        }
+
+        function deleteArticle(articleId) {
+            console.log("delete button clicked for article: " + articleId); // Log the button click
+
+            $.ajax({
+                url: '/Articles/Delete', // Make sure your ArticlesController has a corresponding Delete action
+                type: 'POST',
+                data: { id: articleId },
+                success: function (data) {
+                    console.log("AJAX Success:", data);
+                    alert('Article deleted successfully.');
+                    location.reload();
+                },
+                error: function (xhr, status, error) {
+                    console.error("AJAX Error:", xhr, status, error);
+                    alert("An error occurred while deleting the article: " + error);
                 }
             });
         }

@@ -17,7 +17,7 @@ namespace NEWS_App.Models.IRepositoryImpl
             var today = DateTime.UtcNow.Date;
 
             return await _context.Set<Article>()
-                .Where(a => a.PublishedDate.Date == today && a.IsPublished) 
+                .Where(a => a.PublishedDate.Date == today) 
                  .OrderByDescending(a => a.LikeCount) 
                 .ToListAsync();
         }
@@ -56,7 +56,7 @@ namespace NEWS_App.Models.IRepositoryImpl
             var article = await GetArticleByIdAsync(id);
             if (article != null)
             {
-                _context.Set<Article>().Remove(article);
+                 _context.Set<Article>().Remove(article);
                 await _context.SaveChangesAsync();
             }
         }

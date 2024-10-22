@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Runtime.Intrinsics.X86;
 using Microsoft.AspNetCore.Http;
+using NEWS_App.Models.IRepositoryImpl;
 
 namespace NEWS_App.Controllers
 {
@@ -154,18 +155,19 @@ namespace NEWS_App.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
             var article = await _articleRepository.GetArticleByIdAsync(id);
-            if (article == null) return NotFound();
-            return View(article);
-        }
-
-        [HttpPost, ActionName("Delete")]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            await _articleRepository.DeleteArticleAsync(id);
-            return RedirectToAction(nameof(Index));
+            if (article == null)
+            {
+                return Json(new { delete = false });
+            }
+            else
+            {
+                await _articleRepository.DeleteArticleAsync(id);
+                return Json(new { delete = true });
+            }
         }
     }
 
