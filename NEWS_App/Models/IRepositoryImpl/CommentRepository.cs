@@ -46,7 +46,7 @@ namespace NEWS_App.Models.IRepositoryImpl
 
         public async Task<IEnumerable<Comment>> GetCommentsByArticleIdAsync(int articleId)
         {
-            return await _context.Set<Comment>().OrderByDescending(a => a.CreatedDate).Where(c => c.ArticleId == articleId).ToListAsync();
+            return await _context.Set<Comment>().OrderByDescending(a => a.CreatedDate).Include(c=> c.User).Where(c => c.ArticleId == articleId).ToListAsync();
         }
 
         public async Task<IEnumerable<Comment>> GetCommentsByUserIdAsync(int userId)

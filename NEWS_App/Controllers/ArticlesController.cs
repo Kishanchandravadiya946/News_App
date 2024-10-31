@@ -15,20 +15,41 @@ namespace NEWS_App.Controllers
         private readonly IArticleRepository _articleRepository;
         private readonly ICategoryRepository _categoryRepository;
         private readonly INotificationRepository _notiRepository;
+        private readonly ILikeRepository _likeRepository;
 
-        public ArticlesController(IArticleRepository articleRepository,ICategoryRepository categoryRepository, INotificationRepository notiRepository)
+        public ArticlesController(IArticleRepository articleRepository,ICategoryRepository categoryRepository, INotificationRepository notiRepository, ILikeRepository likeRepository)
         {
             _articleRepository = articleRepository;
             _categoryRepository = categoryRepository;
             _notiRepository = notiRepository;
+            _likeRepository = likeRepository;
         }
 
+        //top news
         public async Task<IActionResult> Index()
         {
             var articles = await _articleRepository.GetAllArticlesAsync();
-            return View(articles);
+
+            var userId = HttpContext.Session.GetInt32("UserId") ?? 0;
+
+            var articleLikeViewModels = new List<ArticleLikeViewModel>();
+
+            foreach (var article in articles)
+            {
+                // Await each call individually to get the result
+                bool isLikedByUser = await _likeRepository.IsArticleLikedByUser(userId, article.Id);
+
+                // Add the article and like status to the view model list
+                articleLikeViewModels.Add(new ArticleLikeViewModel
+                {
+                    Article = article,
+                    IsLikedByUser = isLikedByUser
+                });
+            }
+            return View(articleLikeViewModels);
         }
 
+        //category wise news
         public async Task<IActionResult> category(string name)
         {
           
@@ -38,14 +59,34 @@ namespace NEWS_App.Controllers
             int id=category.Id;
             var articles= await _articleRepository.GetCategorywiseArticle(id);
 
+
+            var userId = HttpContext.Session.GetInt32("UserId") ?? 0;
+
+
+            var articleLikeViewModels = new List<ArticleLikeViewModel>();
+
+            foreach (var article in articles)
+            {
+                // Await each call individually to get the result
+                bool isLikedByUser = await _likeRepository.IsArticleLikedByUser(userId, article.Id);
+
+                // Add the article and like status to the view model list
+                articleLikeViewModels.Add(new ArticleLikeViewModel
+                {
+                    Article = article,
+                    IsLikedByUser = isLikedByUser
+                });
+            }
+
             ViewBag.CategoryName = name;
-            return View(articles);
+            return View(articleLikeViewModels);
         }
 
         public async Task<IActionResult> Unique(int category,int article)
         {
             var userId = HttpContext.Session.GetInt32("UserId") ?? 0;
 
+            //when comment add then redirect to this page not any other
             HttpContext.Session.SetInt32("categoryId", category);
             HttpContext.Session.SetInt32("articleId", article);
             if (userId == 0)
@@ -136,7 +177,22 @@ namespace NEWS_App.Controllers
             {
                 return NotFound("Not match your search with title .");
             }
-            return View(articles);
+
+            var articleLikeViewModels = new List<ArticleLikeViewModel>();
+
+            foreach (var article in articles)
+            {
+                // Await each call individually to get the result
+                bool isLikedByUser = await _likeRepository.IsArticleLikedByUser(userId, article.Id);
+
+                // Add the article and like status to the view model list
+                articleLikeViewModels.Add(new ArticleLikeViewModel
+                {
+                    Article = article,
+                    IsLikedByUser = isLikedByUser
+                });
+            }
+            return View(articleLikeViewModels);
         }
 
 

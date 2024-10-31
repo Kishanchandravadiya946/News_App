@@ -1,4 +1,4 @@
-﻿@model IEnumerable<NEWS_App.Models.Article>
+﻿@model IEnumerable<ArticleLikeViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -18,9 +18,9 @@
                     <div class="row g-0">
                         <!-- Full left-side image with vertical line -->
                         <div class="col-md-4 position-relative">
-                            @if (item.ImageUrl != "No Images")
+                            @if (item.Article.ImageUrl != "No Images")
                             {
-                                <img src="@item.ImageUrl" class="img-fluid h-100" alt="Article Image" style="object-fit: cover; border-radius: 15px 0 0 15px;" />
+                                <img src="@item.Article.ImageUrl" class="img-fluid h-100" alt="Article Image" style="object-fit: cover; border-radius: 15px 0 0 15px;" />
                             }
                             else
                             {
@@ -34,25 +34,25 @@
                         <!-- Content (Title, Text) on the right -->
                         <div class="col-md-8 d-flex flex-column justify-content-between" style="padding: 20px;">
                             <!-- Added padding -->
-                            <a href="@Url.Action("Unique", "Articles", new { category = item.CategoryId, article = item.Id })" style="text-decoration: none; color: inherit;">
+                            <a href="@Url.Action("Unique", "Articles", new { category = item.Article.CategoryId, article = item.Article.Id })" style="text-decoration: none; color: inherit;">
 
                                 <div class="card-body">
 
-                                    <h5 class="card-title" style="font-weight: bold;">@item.Title</h5>
+                                    <h5 class="card-title" style="font-weight: bold;">@item.Article.Title</h5>
 
-                                    <p class="card-text text-truncate-multiline">@item.Content</p>
+                                    <p class="card-text text-truncate-multiline">@item.Article.Content</p>
                                 </div>
                             </a>
                             <!-- Bottom section (Like button on left, Date on right) -->
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
-                                    <button id="likeButton-@item.Id" class="btn btn-sm btn-primary" onclick="likeArticle(@item.Id)">
-                                        <i class="fas fa-thumbs-up"></i> Like
+                                    <button id="likeButton-@item.Article.Id" class="btn btn-sm @(item.IsLikedByUser ? "btn-success" : "btn-primary")" onclick="likeArticle(@item.Article.Id)">
+                                        <i class="fas fa-thumbs-up"></i> @(item.IsLikedByUser ? "Liked" : "Like")
                                     </button>
-                                    <span id="likeCount-@item.Id" class="ml-2">Likes: @item.LikeCount</span>
+                                    <span id="likeCount-@item.Article.Id" class="ml-2">Likes: @item.Article.LikeCount</span>
                                 </div>
                                 <div>
-                                    <small class="text-muted">Published on: @item.PublishedDate.ToString("MM/dd/yyyy hh:mm tt")</small>
+                                    <small class="text-muted">Published on: @item.Article.PublishedDate.ToString("MM/dd/yyyy hh:mm tt")</small>
                                 </div>
                             </div>
                         </div>
@@ -80,48 +80,6 @@
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> <!-- For icons -->
     <script>
 
-     // ON LOAD LIKE BUTTO
-        async function checkIfLiked(articleId, userId) {
-            const response = await fetch(`/Likes/IsLikedByUser?userId=${userId}&articleId=${articleId}`);
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            const isLiked = await response.json(); // Assuming the controller returns a boolean
-            return isLiked;
-        }
-
-        function updateLikeButton(articleId, userId) {
-            checkIfLiked(articleId, userId).then(isLiked => {
-                const button = document.getElementById(`likeButton-${articleId}`);
-                if (isLiked) {
-                    button.classList.add("btn-success");
-                    button.classList.remove("btn-primary");
-                    button.innerHTML = '<i class="fas fa-thumbs-up"></i> Liked';
-                } else {
-                    button.classList.add("btn-primary");
-                    button.classList.remove("btn-success");
-                    button.innerHTML = '<i class="fas fa-thumbs-up"></i> Like';
-                }
-            }).catch(error => {
-                console.error('Error checking like status:', error);
-            });
-        }
-
-        function initializeLikeButtons(userId) {
-            const buttons = document.querySelectorAll('[id^="likeButton-"]');
-            buttons.forEach(button => {
-                const articleId = button.id.split('-')[1]; // Extract articleId from button ID
-                updateLikeButton(articleId, userId); // Check and update the button
-            });
-        }
-
-        // Call the function when the page loads
-        window.onload = function () {
-            const userId = @userId; // Get userId from the server-side code
-            if (userId != 0) {
-                initializeLikeButtons(userId);
-            } // Initialize all like buttons on page load
-        }
 
         function likeArticle(articleId) {
             console.log("Like button clicked for article: " + articleId); // Log the button click

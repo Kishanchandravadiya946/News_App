@@ -15,134 +15,117 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/NEWS_App.styles.css" asp-append-version="true" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
     @RenderSection("Styles", required: false)
 
     <style>
-        /* Category list styling */
-        .category-list {
-            display: flex;
+     /* General Styles */
+
+        /* Make category section horizontally scrollable */
+        .category-scroll-wrapper {
             overflow-x: auto;
             white-space: nowrap;
-            scrollbar-width: none; /* Firefox */
+            max-width: 100%; /* Restrict the width to viewport */
+            padding-bottom: 0.5rem;
         }
 
-        /* Hide scrollbar in Webkit-based browsers */
-        .category-list::-webkit-scrollbar {
+        .category-list .nav-item {
+            display: inline-block;
+            margin-right: 15px; /* Space between categories */
+        }
+
+        /* Hide scrollbar for a cleaner look on web */
+        .category-scroll-wrapper::-webkit-scrollbar {
             display: none;
         }
 
-        /* Style for category items */
-        .category-list a {
-            margin-right: 15px;
-            padding: 8px 16px;
-            border-bottom: 2px solid transparent;
-            color: #007bff;
-            text-decoration: none;
-            transition: border-bottom 0.3s ease, color 0.3s ease;
+        .category-scroll-wrapper {
+            -ms-overflow-style: none; /* IE and Edge */
+            scrollbar-width: none; /* Firefox */
         }
 
-        /* Hover effect */
-        .category-list a:hover {
-            border-bottom: 2px solid #007bff;
-            color: #007bff;
-        }
 
-        /* Active state for clicked category */
-        .category-list a.active {
-            color: #ff5722; /* Change active category color */
-            border-bottom: 2px solid #ff5722; /* Change active bottom line */
-        }
-
-        .navbar .form-inline {
-            display: flex;
-            align-items: center;
-        }
-
-        .input-group {
-            width: 300px; /* Adjust width as needed */
-            margin-right: 10px; /* Space between search and other elements */
-        }
-
-       .input-group input {
-                border: 1px solid #ced4da; /* Default border */
-                border-radius: 4px 0 0 4px; /* Rounded left corners */
-       }
-
-       .input-group button {
-                border-radius: 0 4px 4px 0; /* Rounded right corners */
-        }
-
-                /* Optional: Add hover effect for button */
-       .input-group button:hover {
-                    background-color: #28a745; /* Change button background on hover */
-                    color: white; /* Change text color on hover */
-        }
     </style>
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm mb-3">
             <div class="container-fluid">
+                <!-- Brand -->
                 <a class="navbar-brand" asp-area="" asp-controller="Articles" asp-action="Index">SOCIAL NEWS</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+
+                <!-- Toggle Button for Mobile -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1 d-flex align-items-center justify-content-start category-list">
-                        @* Fetch categories from repository *@
-                        @{
-                            var categories = await _categoryRepository.GetAllCategoriesAsync();
-                        }
 
-                        @foreach (var category in categories)
+                <!-- Navbar Content -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <!-- Scrollable Category Section -->
+                    <div class="category-scroll-wrapper">
+                        <ul class="navbar-nav flex-row flex-nowrap category-list">
+                            @{
+                                var categories = await _categoryRepository.GetAllCategoriesAsync();
+                            }
+                            @foreach (var category in categories)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link me-3" asp-controller="Articles" asp-action="Category" asp-route-name="@category.Name">
+                                        @category.Name
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+
+                    <!-- Search Form and User Links (Aligned Right on Large Screens) -->
+                    <div class="d-flex ms-auto align-items-center">
+                        <!-- Search Form -->
+                        <form class="d-flex me-3" method="get" asp-controller="Articles" asp-action="Search">
+                            <div class="input-group">
+                                <input class="form-control" type="search" name="title" placeholder="Search articles" aria-label="Search">
+                                <button class="btn btn-outline-success" type="submit">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </form>
+
+                        <!-- User Links -->
+                        @if (username == null)
                         {
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="Articles" asp-action="Category" asp-route-name="@category.Name">
-                                    @category.Name
-                                </a>
-                            </li>
+                            <a class="nav-link" asp-area="" asp-controller="User" asp-action="Login">Login</a>
                         }
-                    </ul>
+                        else
+                        {
+                            <!-- Notifications with Badge -->
+                            <a class="nav-link position-relative me-3" asp-area="" asp-controller="Notification" asp-action="Artical">
+                                <i class="fas fa-bell"></i>
+                                @if (NotificationCount > 0)
+                                {
+                                    <span class="badge rounded-pill bg-danger position-absolute top-0 start-100 translate-middle">
+                                        @(NotificationCount.ToString())
+                                    </span>
+                                }
+                            </a>
 
-                    <!-- Search Box -->
-                    <form class="form-inline my-2 my-lg-0" method="get" asp-controller="Articles" asp-action="Search">
-                        <div class="input-group">
-                            <input class="form-control" type="search" name="title" placeholder="Search articles" aria-label="Search">
-                            <button class="btn btn-outline-success" type="submit">
-                                <i class="fas fa-search"></i> <!-- Font Awesome search icon -->
-                            </button>
-                        </div>
-                    </form>
-
-                     
+                            <!-- Admin Create Link and Logout -->
+                            @if (username == "admin@gmail.com")
+                            {
+                                <a class="nav-link me-3" asp-area="" asp-controller="Articles" asp-action="Create">Create</a>
+                            }
+                            <a class="nav-link" asp-area="" asp-controller="User" asp-action="Logout">Logout</a>
+                        }
+                    </div>
                 </div>
-
-                @if (username == null)
-                {
-                    <a class="navbar-brand" asp-area="" asp-controller="User" asp-action="Login">Login</a>
-                    <a class="navbar-brand" asp-area="" asp-controller="User" asp-action="Signup">SignUp</a>
-                }
-                else
-                {
-                    <a class="navbar-brand position-relative" asp-area="" asp-controller="Notification" asp-action="Artical">
-                        Notification
-                        <span class="badge rounded-pill bg-danger position-absolute top-0 start-100 translate-middle">
-                            @(NotificationCount > 0 ? NotificationCount.ToString() : "0")
-                        </span>
-                    </a>
-
-                    @if (username == "admin@gmail.com")
-                    {
-                        <a class="navbar-brand" asp-area="" asp-controller="Articles" asp-action="Create">Create</a>
-                    }
-                    <a class="navbar-brand" asp-area="" asp-controller="User" asp-action="Logout">Logout</a>
-                }
             </div>
         </nav>
     </header>
+
+
 
     <div class="container">
         <main role="main" class="pb-3">

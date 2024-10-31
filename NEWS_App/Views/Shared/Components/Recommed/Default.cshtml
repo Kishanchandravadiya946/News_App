@@ -38,7 +38,12 @@
 
                                     <h5 class="card-title" style="font-weight: bold;">@item.Title</h5>
 
-                                    <p class="card-text text-truncate-multiline">@item.Content</p>
+                                    <p width="100ch" class="card-text " style=" display: -webkit-box;
+                                                                                 -webkit-line-clamp: 3;
+                                                                             -webkit-box-orient: vertical;
+                                                                                 overflow: hidden;
+                                                                         text-overflow: ellipsis;">
+                                     @item.Content</p>
                                 </div>
                             </a>
                             <!-- Bottom section (Like button on left, Date on right) -->
@@ -60,14 +65,4 @@
     </div>
 </div>
 
-@section Styles {
-    <style>
-        .text-truncate-multiline {
-            display: -webkit-box;
-            -webkit-line-clamp: 3; /* Show only 3 lines */
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            text-overflow: ellipsis; /* Add the ellipsis (...) */
-        }
-    </style>
-}
+
