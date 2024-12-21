@@ -1,0 +1,71 @@
+﻿# Build Folders
+bin/
+obj/
+
+# User-Specific Files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Logs
+*.log
+
+# OS Generated Files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Configuration Files
+*.vs/
+.vscode/
+*.idea/
+*.code-workspace
+
+# Runtime Files
+*.dll
+*.exe
+*.pdb
+
+# NuGet Packages
+*.nupkg
+*.snupkg
+
+# Package Manager Directories
+node_modules/
+
+# Publish Output
+wwwroot/dist/
+wwwroot/assets/
+wwwroot/lib/
+
+# Database
+*.mdf
+*.ldf
+
+# Secrets
+secrets.json
+appsettings*.json
+
+# Test Results
+TestResults/
+*.trx
+
+# Coverage Results
+coverage/
+
+# Logs and Temporary Files
+*.log
+*.pid
+*.pid.lock
+*.csv
+
+# Backup Files
+*.bak
+*.swp
+*.swo
+
+# Temporary Files
+*.tmp
+*.temp
